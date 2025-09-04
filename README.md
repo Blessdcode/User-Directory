@@ -46,9 +46,12 @@ The api was not included in dotenv file rather use directly in the fetch request
 ### Frontend Intern Assessment
 
 --**`Objective`**  <br/>
+
 Build a mini web application that showcases a User Directory. This will test your ability to work with
-a frontend framework, consume APIs, and deploy a simple app.
+a frontend framework, consume APIs, and deploy a simple app. <br/>
+
 --**`Requirements`**  <br/>
+
 • Project Setup: Use React or Vue.js. Organize your code into components. <br/>
 • User Interface: Fetch users from the Random User API  <br/>
 (https://randomuser.me/api/?results=10). Display users in a list/grid with: Name, Email, Profile
@@ -58,7 +61,9 @@ photo). New users should appear in the directory. Include basic validation.
 • Data Management: Keep added users in local storage so they persist after refresh.  <br/>
 • Styling: Use plain CSS or a framework (Tailwind/Bootstrap). Keep it clean and consistent.  <br/>
 • Deployment: Deploy the project to Netlify or Vercel. Share both the GitHub repo and live URL.  <br/>
+
 --**`Deliverables`**  <br/>
+
 • GitHub repository with code.  <br/>
 • README file with setup instructions, features overview, and live deployment link.  <br/>
 Evaluation Criteria
