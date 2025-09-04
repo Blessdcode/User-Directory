@@ -71,10 +71,11 @@ const UserDirectoryApp = () => {
 
   const handlerDeleteUser = (id) => {
     const updatedUsers = removeFromStorage(id);
-    alert("User delete successfully!");
-    setUserData(updatedUsers);
+    const apiUsers = userData.filter((u) => u.isApiUser);
+    const merged = [...apiUsers, ...updatedUsers];
+    setUserData(merged);
+    alert("User deleted successfully");
   };
-
   return (
     <div>
       <Header
