@@ -1,27 +1,16 @@
-/* eslint-disable no-unused-vars */
-import { useEffect, useMemo, useState } from "react";
+import { useEffect,  useState } from "react";
 import { Header } from "./custom/header";
-import SaveLocalStore from "./helper/saveLocalStore";
 import { Toolbar } from "./Toolbar";
 import { getSavedUsers } from "./helper/getLocalUser";
 import UserCollections from "./userCollections";
-
-const initialFormatData = {
-  name: "",
-  email: "",
-  phone: "",
-  location: "",
-  picture: "",
-  dob: "",
-};
+import { removeFromStorage } from "./helper/removeFromStorage";
 
 const UserDirectoryApp = () => {
   const [userData, setUserData] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [_error, setError] = useState(null);
   const [query, setQuery] = useState("");
- 
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -40,9 +29,7 @@ const UserDirectoryApp = () => {
         }));
 
         const savedUsers = getSavedUsers();
-        console.log("Saved Users from localStorage:", savedUsers);
-
-        const allUsers = [...apiUsersResults, ...savedUsers];
+        const allUsers = [...savedUsers, ...apiUsersResults];
         console.log("All Users:", allUsers);
         setUserData(allUsers);
         setFilteredUsers(allUsers);
@@ -82,7 +69,10 @@ const UserDirectoryApp = () => {
     );
   }
 
-  
+  const handlerDeleteUser = (id) => {
+    const updatedUsers = removeFromStorage(id);
+    setUserData(updatedUsers);
+  };
 
   return (
     <div>
@@ -94,7 +84,11 @@ const UserDirectoryApp = () => {
       <Toolbar query={query} setQuery={setQuery} total={filteredUsers.length} />
 
       <main className="">
-        <UserCollections users={filteredUsers} query={query} />
+        <UserCollections
+          users={filteredUsers}
+          query={query}
+          handlerDeleteUser={handlerDeleteUser}
+        />
       </main>
     </div>
   );

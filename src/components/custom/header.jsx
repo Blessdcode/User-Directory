@@ -1,9 +1,12 @@
 import { useState } from "react";
-import { FormModel } from "./formModel";
 import { AddUserCard } from "../addUserForm";
-import SaveLocalStore from "../helper/saveLocalStore";
 
-export function Header({ logoText, titleText , setUserData}) {
+export function Header({
+  logoText,
+  titleText,
+  setUserData,
+  handlerDeleteUser,
+}) {
   const [showFormModel, setShowFormModel] = useState(false);
   const handleFormModel = () => {
     setShowFormModel(!showFormModel);
@@ -27,7 +30,11 @@ export function Header({ logoText, titleText , setUserData}) {
       </div>
 
       {showFormModel && (
-        <AddUserCard setUserData={setUserData} />
+        <AddUserCard
+          setUserData={setUserData}
+          setShowFormModel={setShowFormModel}
+          handlerDeleteUser={handlerDeleteUser}
+        />
       )}
     </header>
   );

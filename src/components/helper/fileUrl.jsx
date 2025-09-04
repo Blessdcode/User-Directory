@@ -6,3 +6,5 @@ export function readFileAsDataURL(file) {
     reader.readAsDataURL(file);
   });
 }
+
+
