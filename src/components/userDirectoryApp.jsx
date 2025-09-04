@@ -1,4 +1,4 @@
-import { useEffect,  useState } from "react";
+import { useEffect, useState } from "react";
 import { Header } from "./custom/header";
 import { Toolbar } from "./Toolbar";
 import { getSavedUsers } from "./helper/getLocalUser";
@@ -71,6 +71,7 @@ const UserDirectoryApp = () => {
 
   const handlerDeleteUser = (id) => {
     const updatedUsers = removeFromStorage(id);
+    alert("User delete successfully!");
     setUserData(updatedUsers);
   };
 
