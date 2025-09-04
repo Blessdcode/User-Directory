@@ -1,4 +1,4 @@
-import { LocalKey } from "./localkey";
+import { LocalKey } from "../../utils/localkey";
 
 export const getSavedUsers = () => {
   try {
@@ -10,5 +10,3 @@ export const getSavedUsers = () => {
     console.error("Error getting localStorage:", error);
   }
 };
-
-

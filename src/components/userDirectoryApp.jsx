@@ -3,12 +3,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Header } from "./custom/header";
 import SaveLocalStore from "./helper/saveLocalStore";
 import { Toolbar } from "./Toolbar";
-import UserCard from "./UserCard";
-import { formatUsers } from "./helper/formatUsers";
 import { getSavedUsers } from "./helper/getLocalUser";
 import UserCollections from "./userCollections";
-import FormInput from "./form-input";
-import { FormModel } from "./custom/formModel";
 
 const initialFormatData = {
   name: "",
@@ -25,8 +21,7 @@ const UserDirectoryApp = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [query, setQuery] = useState("");
-  const [formData, setFormData] = useState([initialFormatData]);
-  const [formErrors, setFormErrors] = useState({});
+ 
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -44,8 +39,8 @@ const UserDirectoryApp = () => {
           isApiUser: true,
         }));
 
-        const saveToStorage = SaveLocalStore(apiUsersResults);
         const savedUsers = getSavedUsers();
+        console.log("Saved Users from localStorage:", savedUsers);
 
         const allUsers = [...apiUsersResults, ...savedUsers];
         console.log("All Users:", allUsers);
@@ -91,12 +86,15 @@ const UserDirectoryApp = () => {
 
   return (
     <div>
-      <Header logoText="UD" titleText="User Directory" />
+      <Header
+        logoText="UD"
+        titleText="User Directory"
+        setUserData={setUserData}
+      />
       <Toolbar query={query} setQuery={setQuery} total={filteredUsers.length} />
 
       <main className="">
         <UserCollections users={filteredUsers} query={query} />
-      
       </main>
     </div>
   );

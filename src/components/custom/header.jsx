@@ -3,7 +3,7 @@ import { FormModel } from "./formModel";
 import { AddUserCard } from "../addUserForm";
 import SaveLocalStore from "../helper/saveLocalStore";
 
-export function Header({ logoText, titleText }) {
+export function Header({ logoText, titleText , setUserData}) {
   const [showFormModel, setShowFormModel] = useState(false);
   const handleFormModel = () => {
     setShowFormModel(!showFormModel);
@@ -27,7 +27,7 @@ export function Header({ logoText, titleText }) {
       </div>
 
       {showFormModel && (
-        <AddUserCard  />
+        <AddUserCard setUserData={setUserData} />
       )}
     </header>
   );

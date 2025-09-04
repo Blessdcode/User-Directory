@@ -1,18 +1,18 @@
 /* eslint-disable no-unused-vars */
 import { useRef, useState } from "react";
 import { readFileAsDataURL } from "./helper/fileUrl";
+import SaveLocalStore from "./helper/saveLocalStore";
 
 const initialFormatData = {
   name: "",
   email: "",
   phone: "",
-  location: "",
   picture: "",
 };
 
-export function AddUserCard({ onAdd }) {
+export function AddUserCard({ setUserData }) {
   const [formData, setFormData] = useState(initialFormatData);
-  const { name, email, phone, location, picture, dob } = formData;
+  const { name, email, phone } = formData;
   const [photoDataUrl, setPhotoDataUrl] = useState("");
   const [errors, setErrors] = useState({});
   const fileRef = useRef(null);
@@ -29,10 +29,10 @@ export function AddUserCard({ onAdd }) {
     if (!email.trim()) e.email = "Email is required";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
       e.email = "Enter a valid email";
+    if (!phone.trim()) e.phone = "Phone is required";
     setErrors(e);
     return Object.keys(e).length === 0;
   };
-  
 
   const onSubmit = (ev) => {
     ev.preventDefault();
@@ -42,12 +42,16 @@ export function AddUserCard({ onAdd }) {
       id: crypto.randomUUID(),
       name: formData.name,
       email: formData.email,
-      phone: formData.phone || "N/A",
-      location: formData.location || "Unknown",
+      phone: formData.phone,
       picture: photoDataUrl || "",
       isLocal: true,
     };
-    onAdd(newUser);
+
+    const save = SaveLocalStore([newUser]);
+    setUserData((prev) => [newUser, ...prev]);
+    console.log("Saved user:", save);
+
+    alert("User added successfully!");
 
     setFormData(initialFormatData);
     setPhotoDataUrl("");
@@ -143,7 +147,7 @@ export function AddUserCard({ onAdd }) {
           type="submit"
           className="w-full rounded-xl bg-gray-900 px-4 py-2 font-medium text-white hover:bg-black"
         >
-          Add
+          Add user
         </button>
       </form>
     </div>
