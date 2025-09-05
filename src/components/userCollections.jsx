@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { BiMobile, BiTrash } from "react-icons/bi";
 import { FiMail } from "react-icons/fi";
 import { AddUserCard } from "./addUserForm";
+import { getInitials } from "../utils/getInitials";
 
 const UserCollections = ({ users = [], handlerDeleteUser }) => {
   const [showFormModel, setShowFormModel] = useState(false);
@@ -35,12 +36,19 @@ const UserCollections = ({ users = [], handlerDeleteUser }) => {
               </span>
 
               <div className="flex flex-col items-center text-center">
-                <img
-                  src={user.picture}
-                  alt={user.name}
-                  className="w-28 h-28 rounded-full object-cover mb-4 border-2 border-gray-100"
-                />
-                <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                {!user.picture ? (
+                  <div className="w-28 h-28 text-2xl font-semibold rounded-full bg-gray-100 flex items-center justify-center mb-4 border-2 border-gray-100">
+                    {getInitials(user.name)}
+                  </div>
+                ) : (
+                  <img
+                    src={user.picture}
+                    alt={user.name}
+                    className="w-28 h-28 rounded-full object-cover mb-4 border-2 border-gray-100"
+                  />
+                )}
+
+                <h3 className="text-lg font-semibold text-gray-900 mb-1 capitalize">
                   {user.name}
                 </h3>
                 <div className="flex items-center flex-col text-gray-600 mb-3">
@@ -67,11 +75,7 @@ const UserCollections = ({ users = [], handlerDeleteUser }) => {
           ))}
         </div>
       )}
-      {showFormModel && (
-        <AddUserCard
-          setShowFormModel={setShowFormModel}
-        />
-      )}
+      {showFormModel && <AddUserCard setShowFormModel={setShowFormModel} />}
     </div>
   );
 };

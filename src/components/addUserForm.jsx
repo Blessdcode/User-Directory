@@ -35,132 +35,134 @@ export function AddUserCard({ setUserData, setShowFormModel }) {
     return Object.keys(e).length === 0;
   };
 
- const onSubmit = (ev) => {
-   ev.preventDefault();
-   if (!validate()) return;
+  const onSubmit = (ev) => {
+    ev.preventDefault();
+    if (!validate()) return;
 
-   const newUser = {
-     id: crypto.randomUUID(),
-     name: formData.name,
-     email: formData.email,
-     phone: formData.phone,
-     picture: photoDataUrl || "",
-     isLocal: true,
-   };
+    const newUser = {
+      id: crypto.randomUUID(),
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      picture: photoDataUrl || "",
+      isLocal: true,
+    };
 
-   // ✅ merge with existing
-   const existing = getSavedUsers();
-   const updated = [newUser, ...existing];
-   SaveLocalStore(updated);
-   setUserData(updated);
+    const existing = getSavedUsers();
+    const updated = [newUser, ...existing];
+    SaveLocalStore(updated);
+    setUserData(updated);
 
-   alert("User added successfully!");
+    alert("User added successfully!");
 
-   setFormData(initialFormatData);
-   setPhotoDataUrl("");
-   if (fileRef.current) fileRef.current.value = "";
- };
-
+    setFormData(initialFormatData);
+    setPhotoDataUrl("");
+    if (fileRef.current) fileRef.current.value = "";
+  };
 
   const handleClose = () => {
     setShowFormModel(false);
   };
 
   return (
-    <div className=" w-full md:w-[450px] m-auto absolute left-0 right-0 top-24 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
-      <div className="flex justify-between items-center">
-        <h2 className="mb-3 text-lg font-semibold">Add User</h2>
-        <GrClose size={24} className="cursor-pointer" onClick={handleClose} />
-      </div>
-      <form onSubmit={onSubmit} className="space-y-3">
-        <div>
-          <label className="mb-1 block text-sm text-gray-600">Full name</label>
-          <input
-            value={name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            type="text"
-            className={`w-full rounded-xl border px-3 py-2 outline-none focus:border-gray-400 ${
-              errors.name ? "border-red-300" : "border-gray-200"
-            }`}
-            placeholder="John Not Doe"
-          />
-          {errors.name && (
-            <p className="mt-1 text-xs text-red-600">{errors.name}</p>
-          )}
+    <div className="w-full md:w-[450px] m-auto rounded-2xl border border-gray-200 bg-white p-4 shadow-lg">
+        <div className="flex justify-between items-center">
+          <h2 className="mb-3 text-lg font-semibold">Add User</h2>
+          <GrClose size={24} className="cursor-pointer" onClick={handleClose} />
         </div>
-        <div>
-          <label className="mb-1 block text-sm text-gray-600">Email</label>
-          <input
-            value={email}
-            onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
-            }
-            type="email"
-            className={`w-full rounded-xl border px-3 py-2 outline-none focus:border-gray-400 ${
-              errors.email ? "border-red-300" : "border-gray-200"
-            }`}
-            placeholder="email@example.com"
-          />
-          {errors.email && (
-            <p className="mt-1 text-xs text-red-600">{errors.email}</p>
-          )}
-        </div>
-        <div>
-          <label className="mb-1 block text-sm text-gray-600">Phone</label>
-          <input
-            value={phone}
-            onChange={(e) =>
-              setFormData({ ...formData, phone: e.target.value })
-            }
-            type="tel"
-            className={`w-full rounded-xl border px-3 py-2 outline-none focus:border-gray-400 ${
-              errors.phone ? "border-red-300" : "border-gray-200"
-            }`}
-            placeholder="08104035222"
-          />
-          {errors.phone && (
-            <p className="mt-1 text-xs text-red-600">{errors.phone}</p>
-          )}
-        </div>
+        <form onSubmit={onSubmit} className="space-y-3">
+          <div>
+            <label className="mb-1 block text-sm text-gray-600">
+              Full name
+            </label>
+            <input
+              value={name}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
+              type="text"
+              className={`w-full rounded-xl border px-3 py-2 outline-none focus:border-gray-400 ${
+                errors.name ? "border-red-300" : "border-gray-200"
+              }`}
+              placeholder="John Not Doe"
+            />
+            {errors.name && (
+              <p className="mt-1 text-xs text-red-600">{errors.name}</p>
+            )}
+          </div>
+          <div>
+            <label className="mb-1 block text-sm text-gray-600">Email</label>
+            <input
+              value={email}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
+              type="email"
+              className={`w-full rounded-xl border px-3 py-2 outline-none focus:border-gray-400 ${
+                errors.email ? "border-red-300" : "border-gray-200"
+              }`}
+              placeholder="email@example.com"
+            />
+            {errors.email && (
+              <p className="mt-1 text-xs text-red-600">{errors.email}</p>
+            )}
+          </div>
+          <div>
+            <label className="mb-1 block text-sm text-gray-600">Phone</label>
+            <input
+              value={phone}
+              onChange={(e) =>
+                setFormData({ ...formData, phone: e.target.value })
+              }
+              type="tel"
+              className={`w-full rounded-xl border px-3 py-2 outline-none focus:border-gray-400 ${
+                errors.phone ? "border-red-300" : "border-gray-200"
+              }`}
+              placeholder="08104035222"
+            />
+            {errors.phone && (
+              <p className="mt-1 text-xs text-red-600">{errors.phone}</p>
+            )}
+          </div>
 
-        <div>
-          <label className="mb-1 block text-sm text-gray-600 ">
-            Profile photo (optional)
-          </label>
-          <input
-            ref={fileRef}
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleFile(e.target.files?.[0])}
-            className="block w-full text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-gray-900 file:px-3 file:py-2 file:text-white"
-          />
-          {photoDataUrl && (
-            <div className="mt-2 flex items-center gap-3">
-              <img
-                src={photoDataUrl}
-                alt="preview"
-                className="h-12 w-12 rounded-full object-cover"
-              />
-              <button
-                type="button"
-                onClick={() => {
-                  setPhotoDataUrl("");
-                  if (fileRef.current) fileRef.current.value = "";
-                }}
-                className="text-xs text-gray-500 underline"
-              >
-                Remove
-              </button>
-            </div>
-          )}
-        </div>
-        <button
-          type="submit"
-          className="w-full rounded-xl bg-gray-900 px-4 py-2 font-medium text-white hover:bg-gray-700 cursor-pointer transition"
-        >
-          Add user
-        </button>
-      </form>
-    </div>
+          <div>
+            <label className="mb-1 block text-sm text-gray-600 ">
+              Profile photo (optional)
+            </label>
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/*"
+              onChange={(e) => handleFile(e.target.files?.[0])}
+              className="block w-full text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-gray-900 file:px-3 file:py-2 file:text-white"
+            />
+            {photoDataUrl && (
+              <div className="mt-2 flex items-center gap-3">
+                <img
+                  src={photoDataUrl}
+                  alt="preview"
+                  className="h-12 w-12 rounded-full object-cover"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPhotoDataUrl("");
+                    if (fileRef.current) fileRef.current.value = "";
+                  }}
+                  className="text-xs text-gray-500 underline"
+                >
+                  Remove
+                </button>
+              </div>
+            )}
+          </div>
+          <button
+            type="submit"
+            className="w-full rounded-xl bg-gray-900 px-4 py-2 font-medium text-white hover:bg-gray-700 cursor-pointer transition"
+          >
+            Add user
+          </button>
+        </form>
+      </div>
   );
 }
