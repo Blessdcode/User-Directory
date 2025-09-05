@@ -27,7 +27,7 @@ export function Header({
           className="w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center text-center hover:scale-105 transition-all cursor-pointer"
           onClick={handleFormModel}
           >
-          <span className="text-2xl text-center">+</span>
+          <span className="text-3xl text-center font-semibold">+</span>
         </div>
       </div>
           </div>
