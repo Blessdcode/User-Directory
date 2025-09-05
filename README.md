@@ -19,7 +19,7 @@ This handler most part of the functionality, which include fetching users from a
 
 ### userCollection
 
-User collection displays fetched user that are pass via props from user directory in form of grid including those save in localstorage.
+User collection displays fetched user that are pass via props from user directory component and its in display in grid for good ui experience.
 
 ### Toolbar
 
