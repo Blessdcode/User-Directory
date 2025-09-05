@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Header } from "./custom/header";
 import { Toolbar } from "./Toolbar";
-import { getSavedUsers } from "./helper/getLocalUser";
 import UserCollections from "./userCollections";
 import { removeFromStorage } from "./helper/removeFromStorage";
+import { getSavedUsers } from "./helper/getSavedUsers";
+import SaveLocalStore from "./helper/saveLocalStore";
 
 const UserDirectoryApp = () => {
   const [userData, setUserData] = useState([]);
@@ -13,8 +14,17 @@ const UserDirectoryApp = () => {
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchUser = async () => {
       try {
+        const savedUsers = getSavedUsers();
+
+        if (savedUsers.length > 0) {
+          setUserData(savedUsers);
+          setFilteredUsers(savedUsers);
+          setLoading(false);
+          return;
+        }
+
         const res = await fetch("https://randomuser.me/api/?results=10");
         const data = await res.json();
         const apiUsersResults = data.results.map((user) => ({
@@ -22,29 +32,24 @@ const UserDirectoryApp = () => {
           name: `${user.name.first} ${user.name.last}`,
           email: user.email,
           phone: user.phone,
-          location: `${user.location.city}, ${user.location.country}`,
           picture: user.picture.large,
-          dob: user.dob.age,
           isApiUser: true,
         }));
 
-        const savedUsers = getSavedUsers();
-        const allUsers = [...savedUsers, ...apiUsersResults];
-        console.log("All Users:", allUsers);
-        setUserData(allUsers);
-        setFilteredUsers(allUsers);
-        setQuery("");
+        SaveLocalStore(apiUsersResults);
+        setUserData(apiUsersResults);
+        setFilteredUsers(apiUsersResults);
         setLoading(false);
       } catch (error) {
-        console.log("Error fetching users:", error);
-        const savedUsers = getSavedUsers();
-        setUserData(savedUsers);
-        setFilteredUsers(savedUsers);
+        console.log("Error initializing users:", error);
+        setUserData([]);
+        setFilteredUsers([]);
         setLoading(false);
-        setError("Failed to fetch users from API, showing saved users only.");
+        setError("Failed to fetch users");
       }
     };
-    fetchUsers();
+
+    fetchUser();
   }, []);
 
   useEffect(() => {
@@ -71,9 +76,18 @@ const UserDirectoryApp = () => {
 
   const handlerDeleteUser = (id) => {
     const updatedUsers = removeFromStorage(id);
-    const apiUsers = userData.filter((u) => u.isApiUser);
-    const merged = [...apiUsers, ...updatedUsers];
-    setUserData(merged);
+    setUserData(updatedUsers);
+
+    setFilteredUsers(() => {
+      const q = query.trim().toLowerCase();
+      if (!q) return updatedUsers;
+      return updatedUsers.filter(
+        (user) =>
+          (user.name || "").toLowerCase().includes(q) ||
+          (user.email || "").toLowerCase().includes(q)
+      );
+    });
+
     alert("User deleted successfully");
   };
   return (

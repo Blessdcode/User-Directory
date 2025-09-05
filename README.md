@@ -8,7 +8,7 @@ The project is a User Directory where users are stored either users fetched or u
 
 ### Helpers Functions
 
--- **`getSavedUsers`**: This helps to save user data to localstorage after form validation and success. <br/>
+-- **`getSavedUsers`**: This helps to save fetch users data to and local users data to localstorage. <br/>
 -- **`removeFromStorage`**: This remove user from localstorage base on the UUID <br/>
 -- **`getSavedUsers`**: This is use to get user that are stored in localstorage <br/>
 -- **`readFileAsDataURL`**: This is to convert an image into url that can be read or display by the HTML image tag. <br/>

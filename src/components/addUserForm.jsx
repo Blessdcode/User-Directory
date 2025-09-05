@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { readFileAsDataURL } from "./helper/fileUrl";
 import SaveLocalStore from "./helper/saveLocalStore";
 import { GrClose } from "react-icons/gr";
+import { getSavedUsers } from "./helper/getSavedUsers";
 
 const initialFormatData = {
   name: "",
@@ -16,7 +17,6 @@ export function AddUserCard({ setUserData, setShowFormModel }) {
   const [photoDataUrl, setPhotoDataUrl] = useState("");
   const [errors, setErrors] = useState({});
   const fileRef = useRef(null);
-
 
   const handleFile = async (file) => {
     if (!file) return setPhotoDataUrl("");
@@ -35,29 +35,32 @@ export function AddUserCard({ setUserData, setShowFormModel }) {
     return Object.keys(e).length === 0;
   };
 
-  const onSubmit = (ev) => {
-    ev.preventDefault();
-    if (!validate()) return;
+ const onSubmit = (ev) => {
+   ev.preventDefault();
+   if (!validate()) return;
 
-    const newUser = {
-      id: crypto.randomUUID(),
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
-      picture: photoDataUrl || "",
-      isLocal: true,
-    };
+   const newUser = {
+     id: crypto.randomUUID(),
+     name: formData.name,
+     email: formData.email,
+     phone: formData.phone,
+     picture: photoDataUrl || "",
+     isLocal: true,
+   };
 
-    const save = SaveLocalStore([newUser]);
-    setUserData((prev) => [newUser, ...prev]);
-    console.log("Saved user:", save);
+   // ✅ merge with existing
+   const existing = getSavedUsers();
+   const updated = [newUser, ...existing];
+   SaveLocalStore(updated);
+   setUserData(updated);
 
-    alert("User added successfully!");
+   alert("User added successfully!");
 
-    setFormData(initialFormatData);
-    setPhotoDataUrl("");
-    if (fileRef.current) fileRef.current.value = "";
-  };
+   setFormData(initialFormatData);
+   setPhotoDataUrl("");
+   if (fileRef.current) fileRef.current.value = "";
+ };
+
 
   const handleClose = () => {
     setShowFormModel(false);

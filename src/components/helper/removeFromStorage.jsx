@@ -6,5 +6,3 @@ export const removeFromStorage = (id) => {
   localStorage.setItem(LocalKey, JSON.stringify(updatedUsers));
   return updatedUsers;
 };
-
-
