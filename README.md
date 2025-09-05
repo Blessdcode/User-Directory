@@ -27,7 +27,7 @@ This helps with the search functionality to filter users base on the input enter
 
 ### addUserForm
 
-A dedicated form filed that take in user details (name, email, phone, picture) and validate the input before sending to localstorage.
+A dedicated form fild that take in user details (name, email, phone, picture) and validate the input before sending to localstorage.
 
 ### Header
 
